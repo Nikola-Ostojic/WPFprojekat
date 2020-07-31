@@ -1,0 +1,141 @@
+﻿<Window x:Class="PZ3_NetworkService.Views.Putevi"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PZ3_NetworkService.Views"
+        mc:Ignorable="d"
+        Title="Putevi" 
+        WindowStartupLocation="CenterScreen"
+        Height="400" Width="300"
+        Loaded="Window_Loaded">
+    <Window.Resources>
+
+        <Style TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="TextAlignment" Value="Right" />
+            <Setter Property="Margin" Value="0,0,4,0" />
+        </Style>
+
+        <Style TargetType="Border">
+            <Setter Property="Background" Value="LightYellow" />
+        </Style>
+
+        <Style x:Key="ConfirmingBorderStyle" TargetType="Border">
+            <Setter Property="Background" Value="White" />
+        </Style>
+
+        <Style TargetType="Button">
+            <Setter Property="Width" Value="60" />
+            <Setter Property="Margin" Value="0,0,8,0" />
+        </Style>
+
+        <Style x:Key="ConfirmingButtonsStyle" TargetType="Button">
+            <Setter Property="Width" Value="40" />
+            <Setter Property="Height" Value="30" />
+            <Setter Property="DockPanel.Dock" Value="Right" />
+            <Setter Property="Background" Value="White" />
+            <Setter Property="Margin" Value="5,0,0,0" />
+        </Style>
+
+    </Window.Resources>
+    <Grid>
+
+        <DockPanel Margin="10">
+            <StackPanel 
+                DockPanel.Dock="Top"
+                Orientation="Horizontal"
+                Margin="0,0,0,10">
+                <Button
+                    Content="Dodaj"
+                    Background="LightCyan"
+                    Command="{Binding Dodaj}"/>
+                <Button
+                    Content="Izmeni"
+                    Background="LightGreen"
+                    Command="{Binding Izmeni}"/>
+                <Button
+                    Content="Izbriši"
+                    Background="LightPink"
+                    Command="{Binding Izbrisi}"/>
+                <Button
+                    Content="Odustani"
+                    Background="LightYellow"
+                    Command="{Binding Odustani}"/>
+            </StackPanel>
+            <Grid DockPanel.Dock="Left">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="30" />
+                    <ColumnDefinition Width="50" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="25" />
+                    <RowDefinition  Height="25" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Border
+                    Grid.Row="0"
+                    Grid.Column="0">
+                    <TextBlock Text="Broj"/>
+                </Border>
+                <TextBox
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    PreviewTextInput="TextBox_PreviewTextInput"
+                    Text="{Binding Path=Broj, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                <Border
+                    Grid.Row="1"
+                    Grid.Column="0">
+                    <TextBlock Text="Tip"/>
+                </Border>
+                <ComboBox
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    ItemsSource="{Binding TipoviPuta}"
+                    SelectedItem="{Binding TipoviPutaSelected, Mode=TwoWay}"
+                    DisplayMemberPath="Naziv"></ComboBox>
+            </Grid>
+            <ListView
+                ItemsSource="{Binding Putevi}"
+                SelectedItem="{Binding PuteviSelected, Mode=TwoWay}"
+                Margin="10,0,0,0">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Broj" Width="50" DisplayMemberBinding="{Binding Broj}" />
+                        <GridViewColumn Header="Tip" Width="50" DisplayMemberBinding="{Binding Tip.Naziv}" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </DockPanel>
+
+        <Grid
+            Visibility="{Binding ConfirmingMessageVisibility}">
+            <Border
+                Background="Black"
+                Opacity="0.3">
+            </Border>
+
+            <Border
+                Width="200"
+                Height="100"
+                Background="White">
+                <DockPanel Margin="10">
+                    <TextBlock
+                        DockPanel.Dock="Top"
+                        TextWrapping="Wrap"
+                        TextAlignment="Center">Da li ste sigurni da želite da izbrišete tekući red?</TextBlock>
+                    <DockPanel>
+                        <Button
+                            Style="{StaticResource ConfirmingButtonsStyle}"
+                            Command="{Binding BrisanjeOdustani}">NE</Button>
+                        <Button
+                            Style="{StaticResource ConfirmingButtonsStyle}"
+                            Command="{Binding BrisanjePotvrdi}">DA</Button>
+                        <Border
+                            Style="{StaticResource ConfirmingBorderStyle}"/>
+                    </DockPanel>
+                </DockPanel>
+            </Border>
+        </Grid>
+    </Grid>
+</Window>
